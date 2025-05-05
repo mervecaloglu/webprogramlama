@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Kitap Listesi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        form {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        .form-buttons {
+            margin-top: 10px;
+        }
+        .form-buttons button,
+        .form-buttons a {
+            padding: 8px 16px;
+            border: 1px solid;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-right: 10px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .btn-filtrele {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: white;
+        }
+        .btn-filtrele:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .btn-temizle {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            color: white;
+        }
+        .btn-temizle:hover {
+            background-color: #5a6268;
+            border-color: #5a6268;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        ul li {
+            padding: 15px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        ul li strong {
+            font-size: 18px;
+        }
+        ul li span {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+    <form method="get">
+        <h2>Kitap Filtrele</h2>
+        {{ form.as_p }}
+        <div class="form-buttons">
+            <button type="submit" class="btn-filtrele">Filtrele</button>
+            <a href="{% url 'kitap_listesi' %}" class="btn-temizle">Filtreyi Temizle</a>
+        </div>
+    </form>
+
+    <h2>Kitaplar</h2>
+
+    <ul>
+        {% for kitap in kitaplar %}
+            <li>
+                <strong>{{ kitap.title }}</strong> - <span>{{ kitap.price }}₺</span><br>
+                <small>Yayın Tarihi: {{ kitap.published_time|date:"d.m.Y H:i" }}</small><br>
+                <p>{{ kitap.content }}</p>
+            </li>
+        {% empty %}
+            <li>Henüz kitap bulunamadı.</li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>
