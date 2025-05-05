@@ -33,4 +33,14 @@ def kitap_listesi(request):
         if bitis_tarihi:
             kitaplar = kitaplar.filter(published_time__lte=bitis_tarihi)
 
-    return render(request, 'kitap/kitap_listesi.html', {'kitaplar': kitaplar, 'form': form})
+    kitap_sayisi = kitaplar.count()  # 👈 kitap sayısını hesapladık
+
+    return render(
+        request,
+        'kitap/kitap_listesi.html',
+        {
+            'kitaplar': kitaplar,
+            'form': form,
+            'kitap_sayisi': kitap_sayisi  # 👈 şablona gönderdik
+        }
+    )
