@@ -147,12 +147,13 @@
 
         <h2>Kitaplar</h2>
 
+        <p><strong>Toplam {{ kitap_sayisi }} kitap listeleniyor.</strong></p>
+
         <ul>
             {% for kitap in kitaplar %}
                 <li>
-                    <strong>{{ kitap.title }}</strong>
-                    <span>{{ kitap.price }}₺</span>
-                    <small>Yayın Tarihi: {{ kitap.published_time|date:"d.m.Y H:i" }}</small>
+                    <strong>{{ kitap.title }}</strong> - <span>{{ kitap.price }}₺</span><br>
+                    <small>Yayın Tarihi: {{ kitap.published_time|date:"d.m.Y H:i" }}</small><br>
                     <p>{{ kitap.content }}</p>
                 </li>
             {% empty %}
@@ -160,6 +161,5 @@
             {% endfor %}
         </ul>
     </div>
-
 </body>
 </html>
