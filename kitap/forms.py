@@ -7,3 +7,16 @@ class KitapFiltreForm(forms.Form):
     max_fiyat = forms.DecimalField(label='Maksimum Fiyat', required=False)
     baslangic_tarihi = forms.DateField(label='Başlangıç Tarihi', required=False, widget=forms.DateInput(attrs={'type': 'date'}))
     bitis_tarihi = forms.DateField(label='Bitiş Tarihi', required=False, widget=forms.DateInput(attrs={'type': 'date'}))
+from .models import Yorum
+
+class YorumForm(forms.ModelForm):
+    class Meta:
+        model = Yorum
+        fields = ['isim', 'yorum']
+        labels = {
+            'isim': 'Adınız',
+            'yorum': 'Yorumunuz',
+        }
+        widgets = {
+            'yorum': forms.Textarea(attrs={'rows': 4}),
+        }

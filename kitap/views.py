@@ -1,7 +1,7 @@
-from django.shortcuts import render
-from .models import Kitap
-from .forms import KitapFiltreForm
+from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
+from .models import Kitap, Yorum
+from .forms import KitapFiltreForm, YorumForm
 
 def kitap_listesi(request):
     form = KitapFiltreForm(request.GET or None)
@@ -33,7 +33,7 @@ def kitap_listesi(request):
         if bitis_tarihi:
             kitaplar = kitaplar.filter(published_time__lte=bitis_tarihi)
 
-    kitap_sayisi = kitaplar.count()  # 👈 kitap sayısını hesapladık
+    kitap_sayisi = kitaplar.count()
 
     return render(
         request,
@@ -41,6 +41,26 @@ def kitap_listesi(request):
         {
             'kitaplar': kitaplar,
             'form': form,
-            'kitap_sayisi': kitap_sayisi  # 👈 şablona gönderdik
+            'kitap_sayisi': kitap_sayisi
         }
     )
+
+def kitap_detay(request, pk):
+    kitap = get_object_or_404(Kitap, pk=pk)
+    yorumlar = kitap.yorumlar.all().order_by('-tarih')
+
+    if request.method == 'POST':
+        form = YorumForm(request.POST)
+        if form.is_valid():
+            yeni_yorum = form.save(commit=False)
+            yeni_yorum.kitap = kitap
+            yeni_yorum.save()
+            return redirect('kitap_detay', pk=kitap.pk)
+    else:
+        form = YorumForm()
+
+    return render(request, 'kitap/kitap_detay.html', {
+        'kitap': kitap,
+        'yorumlar': yorumlar,
+        'form': form
+    })

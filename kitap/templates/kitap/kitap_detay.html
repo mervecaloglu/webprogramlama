@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ kitap.title }} - Detay</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1, h2 {
+            color: #2c3e50;
+        }
+
+        .kitap-bilgi {
+            margin-bottom: 30px;
+        }
+
+        .yorum-listesi {
+            margin-top: 40px;
+        }
+
+        .yorum-listesi li {
+            margin-bottom: 15px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background-color: #f2f2f2;
+        }
+
+        .yorum-formu {
+            margin-top: 40px;
+        }
+
+        .yorum-formu form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .yorum-formu input, .yorum-formu textarea {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .yorum-formu button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .yorum-formu button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="kitap-bilgi">
+        <h1>{{ kitap.title }}</h1>
+        <p><strong>Fiyat:</strong> {{ kitap.price }}₺</p>
+        <p><strong>Yayın Tarihi:</strong> {{ kitap.published_time|date:"d.m.Y H:i" }}</p>
+        <p>{{ kitap.content }}</p>
+    </div>
+
+    <div class="yorum-listesi">
+        <h2>Yorumlar</h2>
+        <ul>
+            {% for yorum in yorumlar %}
+                <li>
+                    <strong>{{ yorum.isim }}</strong> - {{ yorum.tarih|date:"d.m.Y H:i" }}<br>
+                    {{ yorum.yorum }}
+                </li>
+            {% empty %}
+                <li>Henüz yorum yapılmamış.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="yorum-formu">
+        <h2>Yorum Ekle</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Gönder</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
