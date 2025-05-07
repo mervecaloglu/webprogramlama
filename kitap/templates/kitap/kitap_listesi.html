@@ -2,94 +2,164 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kitap Listesi</title>
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+            color: #333;
         }
-        form {
-            margin-bottom: 20px;
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
             padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            background-color: #f9f9f9;
         }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        form {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+            margin-bottom: 40px;
+        }
+
+        form h2 {
+            margin-top: 0;
+            font-size: 20px;
+        }
+
         .form-buttons {
-            margin-top: 10px;
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
         }
+
         .form-buttons button,
         .form-buttons a {
-            padding: 8px 16px;
-            border: 1px solid;
-            border-radius: 5px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
             font-size: 14px;
             cursor: pointer;
             text-decoration: none;
-            display: inline-block;
-            margin-right: 10px;
-            transition: background-color 0.3s, border-color 0.3s;
+            transition: all 0.3s ease;
         }
+
         .btn-filtrele {
-            background-color: #007bff;
-            border-color: #007bff;
+            background-color: #1abc9c;
             color: white;
         }
+
         .btn-filtrele:hover {
-            background-color: #0056b3;
-            border-color: #0056b3;
+            background-color: #16a085;
         }
+
         .btn-temizle {
-            background-color: #6c757d;
-            border-color: #6c757d;
+            background-color: #e74c3c;
             color: white;
         }
+
         .btn-temizle:hover {
-            background-color: #5a6268;
-            border-color: #5a6268;
+            background-color: #c0392b;
         }
+
         ul {
             list-style: none;
             padding: 0;
         }
+
         ul li {
-            padding: 15px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
+
+        ul li:hover {
+            transform: scale(1.01);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+        }
+
         ul li strong {
-            font-size: 18px;
+            font-size: 20px;
+            display: block;
+            color: #34495e;
+            margin-bottom: 5px;
         }
+
         ul li span {
-            color: green;
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        ul li small {
+            display: block;
+            margin-top: 5px;
+            color: #777;
+            font-style: italic;
+        }
+
+        ul li p {
+            margin-top: 10px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 600px) {
+            .form-buttons {
+                flex-direction: column;
+            }
+
+            .form-buttons button,
+            .form-buttons a {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
 
-    <form method="get">
-        <h2>Kitap Filtrele</h2>
-        {{ form.as_p }}
-        <div class="form-buttons">
-            <button type="submit" class="btn-filtrele">Filtrele</button>
-            <a href="{% url 'kitap_listesi' %}" class="btn-temizle">Filtreyi Temizle</a>
-        </div>
-    </form>
+    <div class="container">
+        <form method="get">
+            <h2>Kitap Filtrele</h2>
+            {{ form.as_p }}
+            <div class="form-buttons">
+                <button type="submit" class="btn-filtrele">Filtrele</button>
+                <a href="{% url 'kitap_listesi' %}" class="btn-temizle">Filtreyi Temizle</a>
+            </div>
+        </form>
 
-    <h2>Kitaplar</h2>
+        <h2>Kitaplar</h2>
 
-    <ul>
-        {% for kitap in kitaplar %}
-            <li>
-                <strong>{{ kitap.title }}</strong> - <span>{{ kitap.price }}₺</span><br>
-                <small>Yayın Tarihi: {{ kitap.published_time|date:"d.m.Y H:i" }}</small><br>
-                <p>{{ kitap.content }}</p>
-            </li>
-        {% empty %}
-            <li>Henüz kitap bulunamadı.</li>
-        {% endfor %}
-    </ul>
+        <ul>
+            {% for kitap in kitaplar %}
+                <li>
+                    <strong>{{ kitap.title }}</strong>
+                    <span>{{ kitap.price }}₺</span>
+                    <small>Yayın Tarihi: {{ kitap.published_time|date:"d.m.Y H:i" }}</small>
+                    <p>{{ kitap.content }}</p>
+                </li>
+            {% empty %}
+                <li>Henüz kitap bulunamadı.</li>
+            {% endfor %}
+        </ul>
+    </div>
 
 </body>
 </html>
